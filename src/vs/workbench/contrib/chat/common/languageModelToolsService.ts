@@ -16,13 +16,14 @@ import { ContextKeyExpression } from '../../../../platform/contextkey/common/con
 import { ExtensionIdentifier } from '../../../../platform/extensions/common/extensions.js';
 import { createDecorator } from '../../../../platform/instantiation/common/instantiation.js';
 import { IProgress } from '../../../../platform/progress/common/progress.js';
-import { IChatExtensionsContent, IChatToolInputInvocationData, IChatTasksContent, type IChatTerminalToolInvocationData } from './chatService.js';
+import { IChatExtensionsContent, IChatToolInputInvocationData, IChatTodoListContent, type IChatTerminalToolInvocationData } from './chatService.js';
 import { PromptElementJSON, stringifyPromptElementJSON } from './tools/promptTsxTypes.js';
 import { VSBuffer } from '../../../../base/common/buffer.js';
 import { derived, IObservable, IReader, ITransaction, ObservableSet } from '../../../../base/common/observable.js';
 import { Iterable } from '../../../../base/common/iterator.js';
 import { localize } from '../../../../nls.js';
-import { ToolResultAudience } from './languageModels.js';
+import { LanguageModelPartAudience } from './languageModels.js';
+import { Separator } from '../../../../base/common/actions.js';
 
 export interface IToolData {
 	id: string;
@@ -114,7 +115,7 @@ export interface IToolInvocation {
 	context: IToolInvocationContext | undefined;
 	chatRequestId?: string;
 	chatInteractionId?: string;
-	toolSpecificData?: IChatTerminalToolInvocationData | IChatToolInputInvocationData | IChatExtensionsContent | IChatTasksContent;
+	toolSpecificData?: IChatTerminalToolInvocationData | IChatToolInputInvocationData | IChatExtensionsContent | IChatTodoListContent;
 	modelId?: string;
 }
 
@@ -192,7 +193,7 @@ export function stringifyPromptTsxPart(part: IToolResultPromptTsxPart): string {
 export interface IToolResultTextPart {
 	kind: 'text';
 	value: string;
-	audience?: ToolResultAudience[];
+	audience?: LanguageModelPartAudience[];
 }
 
 export interface IToolResultDataPart {
@@ -201,7 +202,7 @@ export interface IToolResultDataPart {
 		mimeType: string;
 		data: VSBuffer;
 	};
-	audience?: ToolResultAudience[];
+	audience?: LanguageModelPartAudience[];
 }
 
 export interface IToolConfirmationMessages {
@@ -209,7 +210,16 @@ export interface IToolConfirmationMessages {
 	message: string | IMarkdownString;
 	disclaimer?: string | IMarkdownString;
 	allowAutoConfirm?: boolean;
+	terminalCustomActions?: ToolConfirmationAction[];
 }
+
+export interface IToolConfirmationAction {
+	label: string;
+	tooltip?: string;
+	data: any;
+}
+
+export type ToolConfirmationAction = IToolConfirmationAction | Separator;
 
 export interface IPreparedToolInvocation {
 	invocationMessage?: string | IMarkdownString;
@@ -217,7 +227,7 @@ export interface IPreparedToolInvocation {
 	originMessage?: string | IMarkdownString;
 	confirmationMessages?: IToolConfirmationMessages;
 	presentation?: 'hidden' | undefined;
-	toolSpecificData?: IChatTerminalToolInvocationData | IChatToolInputInvocationData | IChatExtensionsContent | IChatTasksContent;
+	toolSpecificData?: IChatTerminalToolInvocationData | IChatToolInputInvocationData | IChatExtensionsContent | IChatTodoListContent;
 }
 
 export interface IToolImpl {
