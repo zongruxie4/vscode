@@ -159,10 +159,13 @@
     "debounce": "^1.0.0",
     "deemon": "^1.13.5",
     "electron": "37.2.4",
+    "eslint": "^9.27.0",
+     main
      main
     "electron": "37.2.6",
      snyk-fix-eec14d3b9a150c1cf3e3507764fdb68d
     "eslint": "^9.11.1",
+     snyk-fix-8b6d752de7323c37eb8e8a7d92597198
     "eslint-formatter-compact": "^8.40.0",
     "eslint-plugin-header": "3.1.1",
     "eslint-plugin-jsdoc": "^50.3.1",
