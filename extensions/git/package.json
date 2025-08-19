@@ -1345,7 +1345,7 @@
         },
         {
           "command": "git.deleteWorktreeFromPalette",
-          "when": "config.git.enabled && !git.missing && gitOpenRepositoryCount > 1"
+          "when": "config.git.enabled && !git.missing && gitOpenRepositoryCount != 0"
         },
         {
           "command": "git.deleteRemoteTag",
@@ -1704,6 +1704,11 @@
         {
           "command": "git.openWorktreeInNewWindow",
           "group": "1_worktree@2",
+          "when": "scmProvider == git && scmProviderContext == worktree"
+        },
+        {
+          "command": "git.deleteWorktree",
+          "group": "2_worktree@1",
           "when": "scmProvider == git && scmProviderContext == worktree"
         }
       ],

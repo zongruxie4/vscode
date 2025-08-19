@@ -121,6 +121,8 @@ export interface IChatListItemRendererOptions {
 	readonly noHeader?: boolean;
 	readonly editableCodeBlock?: boolean;
 	readonly renderDetectedCommandsWithRequest?: boolean;
+	readonly restorable?: boolean;
+	readonly editable?: boolean;
 	readonly renderTextEditsAsSummary?: (uri: URI) => boolean;
 	readonly referencesExpandedWhenEmptyResponse?: boolean | ((mode: ChatModeKind) => boolean);
 	readonly progressMessageAtBottomOfResponse?: boolean | ((mode: ChatModeKind) => boolean);
@@ -177,6 +179,7 @@ export interface IChatWidget {
 	readonly onDidChangeViewModel: Event<void>;
 	readonly onDidAcceptInput: Event<void>;
 	readonly onDidHide: Event<void>;
+	readonly onDidShow: Event<void>;
 	readonly onDidSubmitAgent: Event<{ agent: IChatAgentData; slashCommand?: IChatAgentCommand }>;
 	readonly onDidChangeAgent: Event<{ agent: IChatAgentData; slashCommand?: IChatAgentCommand }>;
 	readonly onDidChangeParsedInput: Event<void>;
@@ -223,8 +226,7 @@ export interface IChatWidget {
 	 */
 	waitForReady(): Promise<void>;
 	getViewState(): IChatViewState;
-	togglePaused(): void;
-	lockToCodingAgent(name: string): void;
+	lockToCodingAgent(name: string, displayName: string): void;
 
 	delegateScrollFromMouseWheelEvent(event: IMouseWheelEvent): void;
 }
