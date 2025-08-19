@@ -56,6 +56,7 @@ import { ToolSet } from '../../common/languageModelToolsService.js';
 import { IPromptsService } from '../../common/promptSyntax/service/promptsService.js';
 import { ChatSubmitAction } from '../actions/chatExecuteActions.js';
 import { IChatWidget, IChatWidgetService } from '../chat.js';
+import { resizeImage } from '../imageUtils.js';
 import { ChatDynamicVariableModel } from './chatDynamicVariables.js';
 
 class SlashCommandCompletions extends Disposable {
@@ -647,11 +648,13 @@ class StartParameterizedPromptAction extends Action2 {
 						});
 					}
 				} else if (mimeType && getAttachableImageExtension(mimeType)) {
+					const resized = await resizeImage(contents)
+						.catch(() => decodeBase64(contents).buffer);
 					chatWidget.attachmentModel.addContext({
 						id: generateUuid(),
 						name: localize('mcp.prompt.image', 'Prompt Image'),
 						fullName: localize('mcp.prompt.image', 'Prompt Image'),
-						value: decodeBase64(contents).buffer,
+						value: resized,
 						kind: 'image',
 						references: validURI && [{ reference: validURI, kind: 'reference' }],
 					});
@@ -1125,9 +1128,12 @@ class ToolCompletions extends Disposable {
 				const suggestions: CompletionItem[] = [];
 
 
-				const iter = widget.input.selectedToolsModel.entries.get();
+				const iter = widget.input.selectedToolsModel.entriesMap.get();
 
-				for (const item of iter) {
+				for (const [item, enabled] of iter) {
+					if (!enabled) {
+						continue;
+					}
 
 					let detail: string | undefined;
 

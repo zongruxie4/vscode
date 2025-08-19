@@ -98,7 +98,6 @@ export interface IProductConfiguration {
 		readonly serviceUrl: string;
 		readonly controlUrl: string;
 		readonly mcpUrl: string;
-		readonly extensionUrlTemplate: string;
 		readonly resourceUrlTemplate: string;
 		readonly nlsBaseUrl: string;
 		readonly accessSKUs?: string[];
@@ -336,6 +335,8 @@ export interface IDefaultChatAgent {
 	readonly manageOverageUrl: string;
 	readonly upgradePlanUrl: string;
 	readonly signUpUrl: string;
+	readonly termsStatementUrl: string;
+	readonly privacyStatementUrl: string;
 
 	readonly provider: {
 		default: { id: string; name: string };
