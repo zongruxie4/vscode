@@ -212,7 +212,7 @@
     "style-loader": "^3.3.2",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.1",
-    "tsec": "0.2.7",
+    "tsec": "0.2.9",
     "tslib": "^2.6.3",
     "typescript": "^6.0.0-dev.20251110",
     "typescript-eslint": "^8.45.0",
